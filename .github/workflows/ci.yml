@@ -42,8 +42,8 @@ jobs:
       - name: Build de l'image
         run: |
           docker build ./backend/ \
-          --build-arg HTTP_PROXY=${{ secrets.HTTP_PROXY }} \
-          --build-arg HTTPS_PROXY=${{ secrets.HTTP_PROXY }} \
+          --build-arg HTTP_PROXY=${{ secrets.HTTP_PROXY }}
+          --build-arg HTTPS_PROXY=${{ secrets.HTTP_PROXY }}
           -t task-manager-backend:latest
       - name: Test du conteneur (Run)
         run: |
