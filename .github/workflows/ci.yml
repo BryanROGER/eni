@@ -26,3 +26,33 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+#      - name: SonarQube Quality Gate check
+#        id: sonarqube-quality-gate-check
+#        uses: sonarsource/sonarqube-quality-gate-action@master
+#        env :
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  build-image-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      - name: Build de l'image
+        run: |
+          docker build ./backend/ \
+          --build-arg HTTP_PROXY=${{ secrets.HTTP_PROXY }}
+          --build-arg HTTPS_PROXY=${{ secrets.HTTP_PROXY }}
+          -t task-manager-backend:latest
+      - name: Test du conteneur (Run)
+        run: |
+          docker run -d -p 8000:8000 --name test-container task-manager-backend:latest
+
+          sleep 5
+
+          curl --fail http://localhost:8000/docs || exit 1
+
+      - name: Cleanup
+        if: always()
+        run: docker stop test-container && docker rm test-container

@@ -3,6 +3,12 @@ FROM python:3.12
 WORKDIR /app
 COPY . /app/
 
+ARG HTTP_PROXY=""
+ARG HTTPS_PROXY=""
+
+ENV HTTP_PROXY="${HTTP_PROXY}"
+ENV HTTPS_PROXY="${HTTPS_PROXY}"
+
 RUN pip install -r requirements.txt
 
 EXPOSE 8000
