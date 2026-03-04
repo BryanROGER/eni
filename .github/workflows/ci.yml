@@ -40,11 +40,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build de l'image
-        run: |
-          docker build ./backend/ \
-          --build-arg HTTP_PROXY=${{ secrets.HTTP_PROXY }}
-          --build-arg HTTPS_PROXY=${{ secrets.HTTP_PROXY }}
+        run: >
+          docker build ./backend/
+          --build-arg HTTP_PROXY="${{ secrets.HTTP_PROXY }}"
+          --build-arg HTTPS_PROXY="${{ secrets.HTTP_PROXY }}"
           -t task-manager-backend:latest
+
       - name: Test du conteneur (Run)
         run: |
           docker run -d -p 8000:8000 --name test-container task-manager-backend:latest
