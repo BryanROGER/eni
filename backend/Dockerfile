@@ -9,7 +9,7 @@ ARG HTTPS_PROXY=""
 ENV HTTP_PROXY="${HTTP_PROXY}"
 ENV HTTPS_PROXY="${HTTPS_PROXY}"
 
-RUN pip install -r requirements.txt
+RUN pip install --proxy "${HTTP_PROXY}" --no-cache-dir -r requirements.txt
 
 EXPOSE 8000
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
